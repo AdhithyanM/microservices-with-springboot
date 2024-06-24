@@ -5,11 +5,29 @@ eureka:
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          ## Product Service Route
+          - id: product-service
+            uri: lb://product-service
+            predicates:
+              - Path=/api/products
+          ## Order Service Route
+          - id: order-service
+            uri: lb://order-service
+            predicates:
+              - Path=/api/orders
+          ## Inventory Service Route
+          - id: inventory-service
+            uri: lb://inventory-service
+            predicates:
+              - Path=/api/inventory
 logging:
   level:
     root: INFO
-  org:
-    springframework:
-      cloud:
-        gateway: TRACE
-        gateway.route.RouteDefinitionLocator: INFO
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
+server:
+  port: 8000
